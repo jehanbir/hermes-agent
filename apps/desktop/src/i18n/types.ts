@@ -2959,6 +2959,8 @@ export interface Translations extends NoticeTranslations {
       copyPath: string
       removeFromSidebar: string
       createdInPreviousContext: string
+      hiddenFromSidebar: string
+      undoHide: string
       createFailed: string
       staleBackend: string
       deleteConfirm: string
