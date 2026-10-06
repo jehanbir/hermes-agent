@@ -83,7 +83,9 @@ test.skipIf(!powershell)('the Windows remote marker judge agrees with every corp
   } finally {
     rmSync(dir, { recursive: true, force: true })
   }
-})
+  // One real pwsh judges the whole corpus: its cold start alone can take seconds on a loaded
+  // runner, past the electron project's 5s default.
+}, 30_000)
 
 // A dead claim whose checkout lock is still flocked (a killed updater's completion
 // child) must be kept: the gate answers HELD instead of unlinking it (review G1).
