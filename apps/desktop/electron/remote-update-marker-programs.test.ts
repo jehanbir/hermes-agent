@@ -54,6 +54,7 @@ $script:live=@{};foreach($p in $case.live.PSObject.Properties){$script:live[[int
 
 const powershell = ['pwsh', 'powershell'].find(shell => spawnSync(shell, ['-NoProfile', '-Command', 'exit 0']).status === 0)
 
+// A cold PowerShell start plus the whole-corpus replay runs past vitest's 5s default on a loaded runner.
 test.skipIf(!powershell)('the Windows remote marker judge agrees with every corpus judge case', async () => {
   const corpus = JSON.parse(readFileSync(corpusPath, 'utf8'))
   const dir = mkdtempSync(path.join(os.tmpdir(), 'hermes-remote-ps-judge-'))
@@ -83,7 +84,7 @@ test.skipIf(!powershell)('the Windows remote marker judge agrees with every corp
   } finally {
     rmSync(dir, { recursive: true, force: true })
   }
-})
+}, 60_000)
 
 // A dead claim whose checkout lock is still flocked (a killed updater's completion
 // child) must be kept: the gate answers HELD instead of unlinking it (review G1).
